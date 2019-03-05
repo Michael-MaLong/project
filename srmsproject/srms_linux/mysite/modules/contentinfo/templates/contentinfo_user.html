@@ -1,0 +1,161 @@
+{% extends "base/base_user.html" %}
+
+
+{% block page-content %}
+    <div id="box"></div>
+{% endblock %}
+
+
+{% block self_js %}
+    <script type="text/javascript">
+        var $box = $("#box");
+        var $window = $(window);
+        function setClientHeight() {
+            $box.height($window.height() - 51);
+        }
+        setClientHeight();
+        $window.on("resize", setClientHeight);
+
+        var myChart = echarts.init($box[0]);
+
+        var option = {
+            title: {
+                text: "资源信息图表",
+                subtext: '来自国家电网',
+                x: 'right',
+                y: 'bottom'
+            },
+
+            toolbox: {
+                show: true,
+                x: 'center',
+                y: 'bottom',
+                feature: {
+                    restore: {show: true, title: '还原'},
+                    magicType: {show: true, type: ['chord','line']},
+                    saveAsImage: {show: true,
+                        title: '保存为图片',
+                        type: 'png',
+                        lang: ['点击保存']
+                    }
+                }
+            },
+
+            tooltip: {
+                show: true,
+                showContent: true,
+                //triggerOn:"click",
+                alwaysShowContent: false,
+                enterable: false,
+                confine: false,
+                position: "right",
+                formatter: function (a, b, c) {
+                    if (a.dataType == "node") {
+                        return a.data.value;
+                    }
+                }
+            },
+
+            legend: {
+                x: 'left',
+                data: ['正常', '新增', '修改', '删除']
+            },
+
+            animationDuration: 1200,
+            animationEasingUpdate: "quinticInOut",
+            backgroundColor: "#fff",
+            series: [
+                {
+                    draggable: true,
+                    symbol: "circle",
+                    legendHoverLink: true,
+                    hoverAnimation: true,
+                    focusNodeAdjacency: false,
+                    name: "服务器资源监控系统",
+                    type: "graph",
+                    roam: true,
+                    layout: "force",
+                    force: {
+                        repulsion: 100,
+                        gravity: 0.1,
+                        layoutAnimation: true
+                    },
+
+                    categories: [
+                        {
+                            name: '正常',
+                            itemStyle: {
+                                normal: {
+                                    color: '#b8860b'
+                                }
+                            }
+                        },
+                        {
+                            name: '新增',
+                            itemStyle: {
+                                normal: {
+                                    color: '#da70d6'
+                                }
+                            }
+
+                        },
+                        {
+                            name: '修改',
+                            itemStyle: {
+                                normal: {
+                                    color: '#ff7f50'
+                                }
+                            }
+                        },
+                        {
+                            name: '删除',
+                            itemStyle: {
+                                normal: {
+                                    color: '#ff6347'
+                                }
+                            }
+                        }
+                    ],
+
+
+                    label: {
+                        normal: {
+                            show: false,
+                            position: "bottom",
+                            //formatter:"{b}"
+                            textStyle: {
+                                color: "#333"
+                            }
+                        },
+                        emphasis: {
+                            textStyle: {
+                                color: "#333"
+                            }
+                        }
+                    },
+                    itemStyle: {
+                        normal: {
+                            color: "#2f4554"
+                        }
+                    },
+                    symbolSize: 15,
+                    lineStyle: {
+                        normal: {
+                            width: 1,
+                            curveness: 0,
+                            color: "#ccc",
+                            opacity: 1
+                        },
+                        emphasis: {
+                            width: 2
+                        }
+                    },
+                    data: {{ datas|safe }},
+                    links: {{ links|safe }}
+                }
+            ]
+        }
+        myChart.setOption(option);
+
+    </script>
+{% endblock %}

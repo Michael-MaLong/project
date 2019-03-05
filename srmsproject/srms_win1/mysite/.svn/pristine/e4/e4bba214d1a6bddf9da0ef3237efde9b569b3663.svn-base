@@ -1,0 +1,14 @@
+{% extends "base/base_edit.html" %}
+
+
+{% block modules_js %}
+    <script type="text/javascript">
+        $("#id_name").attr("readonly", "true");
+        $("#id_superid").attr("readonly", "true");
+        $("#id_serverid").attr("readonly", "true");
+        $("#id_changeflag").attr("readonly", "true");
+
+
+    </script>
+{% endblock %}
+

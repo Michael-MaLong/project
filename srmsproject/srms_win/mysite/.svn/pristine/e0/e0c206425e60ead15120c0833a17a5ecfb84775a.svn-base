@@ -1,0 +1,287 @@
+{% extends "base/base.html" %}
+
+{% block css %}
+
+    <!-- bootstrap & fontawesome -->
+    <link rel="stylesheet" href="/static/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/css/font-awesome.css"/>
+
+    <!-- page specific plugin styles -->
+    <link rel="stylesheet" href="/static/css/jquery-ui.custom.css"/>
+    <link rel="stylesheet" href="/static/css/jquery.gritter.css"/>
+    <link rel="stylesheet" href="/static/css/select2.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap-datepicker3.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap-editable.css"/>
+
+    <!-- text fonts -->
+    <link rel="stylesheet" href="/static/css/ace-fonts.css"/>
+
+    <!-- ace styles -->
+    <link rel="stylesheet" href="/static/css/ace.css" class="ace-main-stylesheet" id="main-ace-style"/>
+
+    <!--[if lte IE 9]>
+			<link rel="stylesheet" href="/static/css/ace-part2.css" class="ace-main-stylesheet" />
+		<![endif]-->
+
+    <!--[if lte IE 9]>
+		  <link rel="stylesheet" href="/static/css/ace-ie.css" />
+		<![endif]-->
+
+    <!-- inline styles related to this page -->
+
+    <!-- ace settings handler -->
+    <script src="/static/js/ace-extra.js"></script>
+
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="tabbable">
+                <!-- #section:pages/faq -->
+                <ul class="nav nav-tabs padding-18 tab-size-bigger" id="myTab">
+                    <li class="active">
+                        <a data-toggle="tab" href="#faq-tab-1">
+                            <i class="blue ace-icon fa fa-cog bigger-120"></i>
+                            设置
+                        </a>
+                    </li>
+
+{% comment %}                    <li>
+                        <a data-toggle="tab" href="#faq-tab-2">
+                            <i class="red ace-icon fa fa-envelope bigger-120"></i>
+                            Email
+                        </a>
+                    </li>{% endcomment %}
+
+                    <li>
+                        <a data-toggle="tab" href="#faq-tab-3">
+                            <i class="orange ace-icon fa fa-clock-o bigger-120"></i>
+                            定时任务
+                        </a>
+                    </li>
+
+                </ul>
+
+                <!-- /section:pages/faq -->
+                <div class="tab-content no-border padding-24">
+                    <div id="faq-tab-1" class="tab-pane fade in active">
+                        <h4 class="blue">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            系统参数
+                        </h4>
+
+                        <div class="space-8"></div>
+
+                        <div class="profile-user-info profile-user-info-striped">
+                            {% for systeminfo in param_list %}
+                                {% ifequal systeminfo.param_type "1" %}
+
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">{{ systeminfo.param_display }}</div>
+
+                                        <div class="profile-info-value">
+                                            <span class="editable"
+                                                  id="{{ systeminfo.param_name }}">{{ systeminfo.param_value }}</span>
+                                        </div>
+                                    </div>
+                                {% endifequal %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="faq-tab-2" class="tab-pane fade">
+                        <h4 class="blue">
+                            <i class="red ace-icon fa fa-envelope bigger-110"></i>
+                            Email权限设置
+                        </h4>
+
+                        <div class="space-8"></div>
+
+                        <div class="profile-user-info profile-user-info-striped">
+                            {% for systeminfo in param_list %}
+                                {% ifequal systeminfo.param_type "2" %}
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">{{ systeminfo.param_display }}</div>
+
+                                        <div class="profile-info-value">
+                                            <span class="editable" id="{{ systeminfo.param_name }}">
+                                                {{ systeminfo.param_value }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                {% endifequal %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div id="faq-tab-3" class="tab-pane fade">
+                        <h4 class="blue">
+                            <i class="orange ace-icon fa fa-clock-o bigger-110"></i>
+                            定时任务设置
+                        </h4>
+
+                        <div class="space-8"></div>
+
+                        <div class="profile-user-info profile-user-info-striped">
+                            {% for systeminfo in param_list %}
+                                {% ifequal systeminfo.param_type "3" %}
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">{{ systeminfo.param_display }}</div>
+
+                                        <div class="profile-info-value">
+                                            <span class="editable"
+                                                  id="{{ systeminfo.param_name }}">{{ systeminfo.param_value }}</span>
+                                        </div>
+                                    </div>
+                                {% endifequal %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- /.col -->
+    </div><!-- /.row -->
+
+
+{% endblock %}
+
+
+{% block js %}
+
+
+    <!-- basic scripts -->
+
+    <!--[if !IE]> -->
+    <script type="text/javascript">
+        window.jQuery || document.write("<script src='/static/js/jquery.js'>" + "<" + "/script>");
+    </script>
+
+    <!-- <![endif]-->
+
+
+    <script src="/static/js/bootstrap.js"></script>
+
+    <!-- page specific plugin scripts -->
+
+    <!--[if lte IE 8]>
+		  <script src="/static/js/excanvas.js"></script>
+		<![endif]-->
+    <script src="/static/js/jquery-ui.custom.js"></script>
+    <script src="/static/js/jquery.ui.touch-punch.js"></script>
+    <script src="/static/js/jquery.gritter.js"></script>
+    <script src="/static/js/bootbox.js"></script>
+    <script src="/static/js/jquery.easypiechart.js"></script>
+    <script src="/static/js/date-time/bootstrap-datepicker.js"></script>
+    <script src="/static/js/jquery.hotkeys.js"></script>
+    <script src="/static/js/bootstrap-wysiwyg.js"></script>
+    <script src="/static/js/select2.js"></script>
+    <script src="/static/js/fuelux/fuelux.spinner.js"></script>
+    <script src="/static/js/x-editable/bootstrap-editable.js"></script>
+    <script src="/static/js/x-editable/ace-editable.js"></script>
+    <script src="/static/js/jquery.maskedinput.js"></script>
+    <script src="/static/customjs/custom_base.js"></script>
+
+
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        jQuery(function ($) {
+
+            //editables on first profile page
+            $.fn.editable.defaults.mode = 'inline';
+            $.fn.editableform.loading = "<div class='editableform-loading'><i class='ace-icon fa fa-spinner fa-spin fa-2x light-blue'></i></div>";
+            $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>' +
+                    '<button type="button" class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';
+
+            //editables
+
+            //text editable
+
+            $('#site_name')
+                    .editable({
+                        type: 'text',
+                        name: 'site_name',
+                        success: function (response, newValue) {
+                            var param_dict = {};
+                            param_dict["name"] = "site_name";
+                            param_dict["newvalue"] = newValue;
+                            change_system_config(param_dict)
+                        }
+                    });
+
+            $('#company_name')
+                    .editable({
+                        type: 'text',
+                        name: 'company_name',
+                        success: function (response, newValue) {
+                            var param_dict = {};
+                            param_dict["name"] = "company_name";
+                            param_dict["newvalue"] = newValue;
+                            change_system_config(param_dict)
+                        }
+                    });
+
+            $('#chartspeed').editable({
+                type: 'spinner',
+                name: 'age',
+                spinner: {
+                    min: 1,
+                    max: 10,
+                    step: 1,
+                    on_sides: true
+                    //,nativeUI: true//if true and browser support input[type=number], native browser control will be used
+                },
+
+                success: function (response, newValue) {
+                    var param_dict = {};
+                    param_dict["name"] = "chartspeed";
+                    param_dict["newvalue"] = newValue;
+                    change_system_config(param_dict)
+                }
+
+
+            });
+
+            $('#scheduled_scan').editable({
+                type: 'spinner',
+                name: 'age',
+                spinner: {
+                    min: 0,
+                    max: 1440,
+                    step: 10,
+                    on_sides: true
+                },
+
+                success: function (response, newValue) {
+                    var param_dict = {};
+                    param_dict["name"] = "scheduled_scan";
+                    param_dict["newvalue"] = newValue;
+                    change_system_config(param_dict)
+                }
+
+
+            });
+
+
+        });
+
+
+
+        function change_system_config(param_dict) {
+            var csrftoken = getCookie('csrftoken');
+            var change_url = "{% url "systeminfo:systeminfo_paramupdate" %}";
+            param_dict["csrfmiddlewaretoken"] = csrftoken;
+            custom_ajax_post(change_url, param_dict);
+        }
+
+    </script>
+
+{% endblock %}

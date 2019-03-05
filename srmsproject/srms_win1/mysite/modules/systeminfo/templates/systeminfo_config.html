@@ -1,0 +1,182 @@
+{% extends "base/base.html" %}
+
+{% block css %}
+    <link rel="stylesheet" href="/static/css/jquery-ui.custom.css"/>
+    <link rel="stylesheet" href="/static/css/bootstrap-editable.css"/>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li><a href="#">系统相关</a></li>
+    <li class="active">系统信息</li>
+{% endblock %}
+
+{% block page-content %}
+
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div class="space-6"></div>
+
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <!-- #section:pages/invoice -->
+                    <div class="widget-box transparent">
+                        <div class="widget-header widget-header-large">
+                            <h3 class="widget-title grey lighter">
+                                <i class="ace-icon fa fa-leaf green"></i>
+                                系统环境
+                            </h3>
+
+                            <!-- #section:pages/invoice.info -->
+                            <div class="widget-toolbar no-border invoice-info">
+                                <span class="invoice-info-label">电话:</span>
+                                <span class="red">#400-8888</span>
+
+                                <br/>
+                                <span class="invoice-info-label">邮件:</span>
+                                <span class="blue">www@www.com</span>
+                            </div>
+
+                            <div class="widget-toolbar hidden-480">
+                                <a href="#">
+                                    <i class="ace-icon fa fa-print"></i>
+                                </a>
+                            </div>
+
+                            <!-- /section:pages/invoice.info -->
+                        </div>
+
+                        <div class="widget-body">
+                            <div class="widget-main padding-24">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-xs-11 label label-lg label-info arrowed-in arrowed-right">
+                                                <b>系统信息</b>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <ul class="list-unstyled spaced">
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    开发语言:
+                                                    <b class="blue">{{ systeminfo.language }}</b>
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    WEB服务:
+                                                    <b class="blue">{{ systeminfo.service }}</b>
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    数据库:
+                                                    <b class="blue">{{ systeminfo.database }}</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    节点数:
+                                                    <b class="blue">{{ systeminfo.nodenumber }}</b>
+                                                </li>
+
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right blue"></i>
+                                                    软件版本:
+                                                    <b class="blue">{{ systeminfo.version }}</b>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-xs-11 label label-lg label-success arrowed-in arrowed-right">
+                                                <b>服务器信息</b>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <ul class="list-unstyled  spaced">
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>
+                                                    操作系统:
+                                                    <b class="green">{{ systeminfo.system }}</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>
+                                                    IP地址:
+                                                    <b class="green">{{ systeminfo.ip }}</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>
+                                                    MAC地址:
+                                                    <b class="green">{{ systeminfo.mac }}</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>
+                                                    CPU:
+                                                    <b class="green">{{ systeminfo.cpu }}</b>
+                                                </li>
+                                                <li>
+                                                    <i class="ace-icon fa fa-caret-right green"></i>
+                                                    内存:
+                                                    <b class="green">{{ systeminfo.memory }}</b>
+                                                </li>
+
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+
+                                <div class="space"></div>
+
+
+                                <div class="hr hr8 hr-double hr-dotted"></div>
+
+
+                                <div class="space-6"></div>
+                                <div class="well">
+                                    {{ site_name }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /section:pages/invoice -->
+                </div>
+            </div>
+
+            <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- /.col -->
+    </div><!-- /.row -->
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <!--[if lte IE 8]>
+		  <script src="/static/js/excanvas.js"></script>
+		<![endif]-->
+    <script src="/static/js/jquery-ui.custom.js"></script>
+    <script src="/static/js/jquery.ui.touch-punch.js"></script>
+    <script src="/static/js/jquery.hotkeys.js"></script>
+    <script src="/static/js/bootstrap-wysiwyg.js"></script>
+    <script src="/static/js/fuelux/fuelux.spinner.js"></script>
+    <script src="/static/js/x-editable/bootstrap-editable.js"></script>
+    <script src="/static/js/x-editable/ace-editable.js"></script>
+    <script src="/static/js/jquery.maskedinput.js"></script>
+    <script src="/static/customjs/custom_base.js"></script>
+{% endblock %}
+

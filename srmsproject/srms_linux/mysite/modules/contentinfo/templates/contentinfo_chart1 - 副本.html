@@ -1,0 +1,29 @@
+{% extends "base/base.html" %}
+
+{% block breadcrumb %}
+    <li class="active">资源图表</li>
+{% endblock %}
+
+{% block page-content %}
+    <div id="box"></div>
+{% endblock %}
+
+
+{% block self_js %}
+    <script src="/static/js/option.js"></script>
+    <script type="text/javascript">
+
+        var $box = $("#box");
+        var $window = $(window);
+        function setClientHeight() {
+            $box.height($window.height() - 51);
+        }
+        setClientHeight();
+        $window.on("resize", setClientHeight);
+
+        var myChart = echarts.init($box[0]);
+
+        myChart.setOption(option);
+
+    </script>
+{% endblock %}

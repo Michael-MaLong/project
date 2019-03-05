@@ -1,0 +1,50 @@
+{% extends "base/base.html" %}
+
+{% block breadcrumb %}
+    <li class="active">监控服务器图表</li>
+{% endblock %}
+
+{% block page-content %}
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- PAGE CONTENT BEGINS -->
+            <div>
+                <ul class="ace-thumbnails clearfix">
+                    {% for server in serverlist %}
+                    <li>
+                        <a href="/contentinfo/server/?serverid={{ server.id }}" target="_blank">
+
+                        <img width="150" height="150" alt="150x150" src="/static/images/gallery/server.png"/>
+                        </a>
+                        <div width="150">名称：{{ server.name|truncatechars:16 }}</div>
+                        <div width="150">I  P：{{ server.ip|truncatechars:16 }}</div>
+                        <div width="150">时间：{{ server.synctime|date:"Y-m-d H:i"|truncatechars:16 }}</div>
+
+                    </li>
+                    {% empty %}
+                        <div class="info">
+                            <td colspan="25">抱歉，目前没有满足条件的服务器信息。</td>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- PAGE CONTENT ENDS -->
+        </div>
+        <!-- /.col -->
+    </div>
+
+
+
+{% endblock %}
+{% block js %}
+    <script src="/static/js/jquery-ui.custom.js"></script>
+{% endblock %}
+
+
+{% block self_js %}
+
+    <script type="text/javascript">
+
+
+    </script>
+{% endblock %}

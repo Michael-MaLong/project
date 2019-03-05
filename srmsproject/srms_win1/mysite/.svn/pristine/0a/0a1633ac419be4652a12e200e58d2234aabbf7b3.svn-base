@@ -1,0 +1,14 @@
+{% extends "base/base_edit.html" %}
+
+
+
+{% block modules_js %}
+    <script type="text/javascript">
+        $("#id_password").attr("type","password");
+
+        f = $(".form-horizontal").get(0);
+        $(f).validate({rules: {id_mobile_phone: {digits: true},id_email: {email: true}}});
+
+
+    </script>
+{% endblock %}

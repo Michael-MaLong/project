@@ -1,0 +1,335 @@
+{% extends "base/base.html" %}
+
+{% block self_css %}
+
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        .node circle {
+            cursor: pointer;
+            transform: scale(1, 1);
+        }
+
+        .directory circle {
+            fill: #383535;
+            stroke: rgb(111, 179, 224);
+            stroke-width: 1.2;
+        }
+
+        .file circle {
+            fill: #77cc11;
+        }
+
+        .directory.exception circle {
+            stroke: #c23531;
+        }
+
+        .file.exception circle {
+            fill: #c23531;
+        }
+
+        .node text {
+            font: 14px Simsun, sans-serif;
+            fill: white;
+            display: none;
+        }
+
+        .directory text {
+            /* text-shadow:0 1px 0 #fff, 0 -1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff; */
+        }
+
+        .node circle:hover {
+            transform: scale(2, 2);
+        }
+
+        .node circle:hover + text {
+            display: block;
+        }
+
+        .link {
+            fill: none;
+            stroke: rgb(111, 179, 224);
+            stroke-opacity: 0.6;
+            stroke-width: 1px;
+        }
+
+        svg {
+            background-color: #383535;
+            display: block;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        #progress {
+            width: 100%;
+            position: fixed;
+            top: 0;
+        }
+
+        #progress span {
+            display: block;
+            height: 5px;
+            width: 0;
+            background-color: #77cc11;
+            -webkit-transition: width 2s linear;
+            -moz-transition: width 2s linear;
+            -o-transition: width 2s linear;
+            transition: width 2s linear;
+        }
+
+        .tip {
+            width: 328px;
+            height: 52px;
+            text-indent: 15px;
+            line-height: 52px;
+            font-family: Microsoft YaHei;
+            font-size: 14px;
+            border: 1px solid #a1a1a1;
+            border-radius: 3px;
+            background-color: white;
+            box-shadow: 0 3px 20px rgba(90, 90, 90, 0.6);
+            position: fixed;
+            top: -100px;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            -webkit-animation: prompt 2500ms;
+            -moz-animation: prompt 2500ms;
+            -o-animation: prompt 2500ms;
+            animation: prompt 2500ms;
+        }
+
+        @-webkit-keyframes prompt {
+            0% {
+                top: -100px;
+                opacity: 0
+            }
+            20% {
+                top: 45px;
+                opacity: 1
+            }
+            80% {
+                top: 45px;
+                opacity: 1
+            }
+            100% {
+                top: -100px;
+                opacity: 0
+            }
+        }
+
+        @-moz-keyframes prompt {
+            0% {
+                top: -100px;
+                opacity: 0
+            }
+            20% {
+                top: 45px;
+                opacity: 1
+            }
+            80% {
+                top: 45px;
+                opacity: 1
+            }
+            100% {
+                top: -100px;
+                opacity: 0
+            }
+        }
+
+        @-o-keyframes prompt {
+            0% {
+                top: -100px;
+                opacity: 0
+            }
+            20% {
+                top: 45px;
+                opacity: 1
+            }
+            80% {
+                top: 45px;
+                opacity: 1
+            }
+            100% {
+                top: -100px;
+                opacity: 0
+            }
+        }
+
+        @keyframes prompt {
+            0% {
+                top: -100px;
+                opacity: 0
+            }
+            20% {
+                top: 45px;
+                opacity: 1
+            }
+            80% {
+                top: 45px;
+                opacity: 1
+            }
+            100% {
+                top: -100px;
+                opacity: 0
+            }
+        }
+    </style>
+
+{% endblock %}
+
+{% block breadcrumbs %}
+{% endblock %}
+
+{% block page-content %}
+    <svg width="1270" height="700"></svg>
+    <div id="progress">
+        <span></span>
+    </div>
+{% endblock %}
+
+
+{% block self_js %}
+    <script src="/static/js/d3.v4.min.js"></script>
+    <script type="text/javascript">
+
+        var datastr =  {{ datas|safe }};
+        var chartspeed = {{ chartspeed }};
+
+        var oProgress = document.getElementById("progress");
+        var oSpan = oProgress.children[0];
+
+        var docElem = document.documentElement,
+                width = docElem.clientWidth,
+                height = docElem.clientHeight,
+                originX = width / 2,
+                originY = height / 2;
+
+        var svg = d3.select("svg"),
+                g = svg.append("g");
+
+        svg.call(d3.zoom().scaleExtent([1 / 2, 8]).on("zoom", zoomed));
+
+        var stratify = d3.stratify().parentId(function (d) {
+            return d.id.substring(0, d.id.lastIndexOf("."));
+        });
+
+        var tree = d3.tree().size([2 * Math.PI, height / 2 - 5]).separation(function (a, b) {
+            return (a.parent == b.parent ? 1 : 2) / a.depth;
+        });
+
+        var root = tree(d3.hierarchy(datastr));
+
+        var num = root.descendants().length;
+
+        var i = 0;
+
+        draw(root);
+
+        function draw(n) {
+
+            var node = g.append("g")
+                    .attr("class", function () {
+                        return (n.data.ftype == "1" ? "node directory" : "node file") + (n.data.changeflag != "0" ? " exception" : "");
+                    })
+                    .attr("transform", function () {
+                        return "translate(" + radialPoint(n.x, n.y).map(function (value, key) {
+                            return value += (key ? originY : originX)
+                        }) + ")";
+                    });
+
+            node.append("circle")
+                    .attr("r", 0)
+                    .transition()
+                    .duration(function () {
+                        return 500;
+                    })
+                    .on("end", function () {
+                        drawLine(n);
+                        i++;
+                        $("#progress span").css("width", (i / num) * 100 + "%");
+                        if (i == num) {
+                            setTimeout(function () {
+                                $("#progress").fadeOut(function () {
+                                    $("<div>加载完成</div>").on("animationend",function () {
+                                        $(this).remove();
+                                    }).appendTo("body").addClass("tip");
+                                });
+                            }, 2000);
+                        }
+                    })
+                    .attr("r", function () {
+                        return n.data.ftype === "1" ? 2.4 : 3;
+                    });
+
+            node.append("text")
+                    .attr("dy", "0.31em")
+                    .attr("x", function () {
+                        return n.x < Math.PI === !n.children ? 16 : -16;
+                    })
+                    .attr("text-anchor", function () {
+                        return n.x < Math.PI === !n.children ? "start" : "end";
+                    })
+                    .attr("transform", function () {
+                        return "rotate(" + (n.x < Math.PI ? n.x - Math.PI / 2 : n.x + Math.PI / 2) * 180 / Math.PI + ")";
+                    })
+                    .text(function () {
+                        return n.data.name
+                    });
+        }
+
+        function drawLine(n) {
+            if (!n.children) {
+                return;
+            }
+
+            var fn = d3.linkRadial().angle(function (d) {
+                return d.x;
+            }).radius(function (d) {
+                        return d.y;
+                    });
+
+            n.children.map(function (value) {
+                g.insert("path", ":first-child")
+                        .attr("class", "link")
+                        .attr("d", fn({source: n, target: value}))
+                        .attr("transform", "translate(" + originX + "," + originY + ")")
+                        .attr("stroke-dasharray", function () {
+                            return this.getTotalLength() || 200;
+                        })
+                        .attr("stroke-dashoffset", function () {
+                            return this.getTotalLength() || 200;
+                        })
+                        .transition()
+                        .duration(function () {
+                            return Math.ceil(Math.random() * chartspeed) * 1000;
+                        })
+                        .on("end", function () {
+                            draw(value);
+                        })
+                        .attr("stroke-dashoffset", "0");
+            });
+
+        }
+
+        function radialPoint(x, y) {
+            return [(y = +y) * Math.cos(x -= Math.PI / 2), y * Math.sin(x)];
+        }
+
+        function zoomed() {
+            g.attr("transform", d3.event.transform);
+        }
+
+
+    </script>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
